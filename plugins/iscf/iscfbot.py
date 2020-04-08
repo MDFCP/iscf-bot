@@ -28,7 +28,7 @@ class ISCFBot(BotPlugin):
     
     def callback_mention(self, message, mentioned_people):
         if self.bot_identifier in mentioned_people:
-            if bool(re.match(r'/(hi)|(hello)|(hey)/gi', message.lower())):
+            if bool(re.match(r'/(hi)|(hello)|(hey)/', message.lower())):
                 return self.send_random_greet()
     
     def send_random_greet(self):
