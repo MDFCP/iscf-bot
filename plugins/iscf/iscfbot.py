@@ -1,6 +1,7 @@
 from errbot import BotPlugin, botcmd
 
 import search 
+import random
 
 class ISCFBot(BotPlugin):
     """
@@ -22,7 +23,27 @@ class ISCFBot(BotPlugin):
 
     @botcmd
     def hi(self, msg, args):
-        return 'Hey!'
+        response = [
+            "Hello",
+            "Hello there.",
+            "Hi",
+            "Hi there.",
+            "Hey",
+            "Good day",
+            "Pleased to meet you",
+            "How are things?",
+            "Hiya",
+            "Sup?",
+            "What's up?",
+            "Whasssup?",
+            "How's it going?",
+            "Howdy",
+            "Well hello!",
+            "Yo",
+            "Greetings!",
+            "Look who it is!"
+        ]
+        return random.choice(response)
     
     def callback_mention(self, message, mentioned_people):
         if self.bot_identifier in mentioned_people:
