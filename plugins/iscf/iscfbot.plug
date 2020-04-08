@@ -1,0 +1,9 @@
+[Core]
+Name = Smart City Bot
+Module = iscfbot
+
+[Documentation]
+Description = This bot is here to help the fellows maintain sanity.
+
+[Python]
+Version = 2+

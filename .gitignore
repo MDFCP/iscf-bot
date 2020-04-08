@@ -1,0 +1,8 @@
+.env
+data/
+__pycache__/
+errbot.log
+city.json
+test.py
+.DS_Store
+config_.py
