@@ -19,3 +19,7 @@ class ISCFBot(BotPlugin):
         #print('pp')
         """ print(args)"""
         return search.se(args) 
+
+    @botcmd
+    def hi(self, msg, args):
+        return 'Hey!'
