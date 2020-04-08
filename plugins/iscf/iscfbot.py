@@ -23,3 +23,7 @@ class ISCFBot(BotPlugin):
     @botcmd
     def hi(self, msg, args):
         return 'Hey!'
+    
+    def callback_mention(self, message, mentioned_people):
+        if self.bot_identifier in mentioned_people:
+            self.send(message.frm, 'Errbot has been mentioned !')
