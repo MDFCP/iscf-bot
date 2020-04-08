@@ -45,6 +45,6 @@ class ISCFBot(BotPlugin):
         ]
         return random.choice(response)
     
-    def callback_mention(self, message, mentioned_people):
+    """ def callback_mention(self, message, mentioned_people):
         if self.bot_identifier in mentioned_people:
-            self.send(message.frm, 'Errbot has been mentioned !')
+            self.send(message.frm, 'Errbot has been mentioned !') """
