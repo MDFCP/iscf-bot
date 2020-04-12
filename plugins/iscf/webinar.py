@@ -63,6 +63,8 @@ def get(db, args):
 
     db[WB_INDEX] = heap
     
+    if res == '':
+        return 'Sorry. No upcoming events.'
     return res
 
 def notify(self):
