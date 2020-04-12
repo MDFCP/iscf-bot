@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import html
 import heapq
+import copy
 from pytz import timezone
 from datetime import datetime, timedelta
 
@@ -52,28 +53,49 @@ def get(db, args):
             return 'You entered a non numeric value as the argument.'
     else:
         return 'You should enter number of upcoming webinars as an argument.'
-    
-    
 
     res = ''
     #stop_at = num if num < len(db[WB_INDEX]) else len(db[WB_INDEX])
     heap = db[WB_INDEX]
     cnt = 0
+    new_heap = copy.deepcopy(heap)
     while(True):
-        if cnt >= num or len(heap) == 0 or cnt >= len(heap):
+        if cnt >= num or len(heap) == 0:
             break
         
         if heap[0][0] < datetime.now(timezone('Asia/Kolkata')):
             heapq.heappop(heap)
+            heapq.heappop(new_heap)
         else:
-            res = display_format(res, heap[cnt][1]['link'], heap[cnt][1]['name'], heap[cnt][0])
+            item = heapq.heappop(heap)
+            res = display_format(res, item[1]['link'], item[1]['name'], item[0])
             cnt = cnt + 1
 
-    db[WB_INDEX] = heap
+    db[WB_INDEX] = new_heap
     
     if res == '':
         return 'Sorry. No upcoming events.'
     return html.escape(res)
+
+def delete(db, args):
+    if len(args) != 1:
+        return 'Enter name of the events as an argument.'
+
+    heap = db[WB_INDEX]
+    new_heap = []
+    msg = ''
+    while(len(heap) != 0):
+        item = heapq.heappop(heap)
+
+        if item[1]['name'] == args[0]:
+            msg = display_format('**Deleted**\n', item[1]['link'], item[1]['name'], item[0])
+        else:
+            heapq.heappush(new_heap, item) 
+    
+    db[WB_INDEX] = new_heap
+
+    return html.escape(msg)
+
 
 def notify(self):
     if not self.get(WB_INDEX, False):
