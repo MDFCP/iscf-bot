@@ -31,7 +31,7 @@ def submit(db, args):
 
     db[WB_INDEX] = temp_heap
     
-    return 'Thanks!! You submitted **' + args[0] + '** which is scheduled at **' + datetime.strftime(parsed_date, '%d %b, %Y %I:%M %p') + '**.'
+    return html.escape('Thanks!! You submitted **' + args[0] + '** which is scheduled at **' + datetime.strftime(parsed_date, '%d %b, %Y %I:%M %p') + '**.')
 
 # args: !wb get 3
 def get(db, args):
@@ -65,7 +65,7 @@ def get(db, args):
     
     if res == '':
         return 'Sorry. No upcoming events.'
-    return res
+    return html.escape(res)
 
 def notify(self):
     if not self.get(WB_INDEX, False):
@@ -79,7 +79,7 @@ def notify(self):
         
         cnt = cnt + 1
         if heap[0][0] < (datetime.now() + timedelta(minutes = 10)):
-            self.send(self.build_identifier("#bot-test"), display_format('', heap[0][1]['link'], heap[0][1]['name'], heap[0][0]))
+            self.send(self.build_identifier("#bot-test"), html.escape(display_format('', heap[0][1]['link'], heap[0][1]['name'], heap[0][0])))
             heapq.heappop(heap)
     
     self[WB_INDEX] = heap
