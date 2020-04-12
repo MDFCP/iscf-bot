@@ -1,5 +1,5 @@
 [Core]
-Name = Smart City Bot
+Name = SCB
 Module = iscfbot
 
 [Documentation]

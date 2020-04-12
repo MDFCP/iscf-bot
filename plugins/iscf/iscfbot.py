@@ -1,8 +1,11 @@
+
+import re
+import random
 from errbot import BotPlugin, botcmd
+import shlex
 
 import search 
-import random
-import re
+import webinar
 
 class ISCFBot(BotPlugin):
     """
@@ -53,3 +56,20 @@ class ISCFBot(BotPlugin):
             "Look who it is!"
         ]
         return random.choice(response)
+    
+    @botcmd
+    def wb(self, msg, args):
+        args = shlex.split(args)
+
+        if args[0].lower() == 'submit':
+            return webinar.submit(self, args[1:])
+        elif args[0].lower() == 'get':
+            return webinar.get(self, args[1:])
+        return 'Web'
+    
+    def callback(self):
+        webinar.notify(self)
+    
+    def activate(self):
+        super().activate()
+        self.start_poller(2, self.callback)
