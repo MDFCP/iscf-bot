@@ -15,7 +15,7 @@ def submit(db, args):
         db[WB_INDEX] = []
     
     try:
-        parsed_date = datetime.strptime(args[1], '%d/%m/%Y %I:%M %p')
+        parsed_date = datetime.strptime(args[1] + ' +0530', '%d/%m/%Y %I:%M %p %z')
     except:
         return 'Date should be formatted as <DD/MM/YYYY hh:mm AM/PM>. eg: "12/04/2020 3:05 PM"'
 
