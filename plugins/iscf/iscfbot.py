@@ -65,7 +65,9 @@ class ISCFBot(BotPlugin):
             return webinar.submit(self, args[1:])
         elif args[0].lower() == 'get':
             return webinar.get(self, args[1:])
-        return 'Web'
+        elif args[0].lower() == 'delete':
+            return webinar.delete(self, args[1:])
+        return 'Sorry. Can\'t find subcommand **' + args[0] + '**.'
     
     def callback(self):
         webinar.notify(self)
