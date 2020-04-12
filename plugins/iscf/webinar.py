@@ -94,6 +94,8 @@ def delete(db, args):
     
     db[WB_INDEX] = new_heap
 
+    if msg == '':
+        return 'Can\'t find the item: **' + args[0] + '**'
     return html.escape(msg)
 
 
