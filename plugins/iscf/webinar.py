@@ -45,13 +45,15 @@ def get(db, args):
 
     if len(args) == 0:
         num = 5
-    elif len(args) != 1:
+    elif len(args) == 1:
+        try:
+            num = int(args[0])
+        except:
+            return 'You entered a non numeric value as the argument.'
+    else:
         return 'You should enter number of upcoming webinars as an argument.'
     
-    try:
-        num = int(args[0])
-    except:
-        return 'You entered a non numeric value as the argument.'
+    
 
     res = ''
     #stop_at = num if num < len(db[WB_INDEX]) else len(db[WB_INDEX])
