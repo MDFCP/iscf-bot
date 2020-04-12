@@ -85,7 +85,7 @@ def notify(self):
     self[WB_INDEX] = heap
 
 def display_format(res, link, name, time):
-    res = res + 'Name: <' + link + '|**' + name + '**>. \nDate and Time: **' + datetime.strftime(time, '%d %b, %Y %I:%M %p') + '** \n\n'
+    res = res + 'Name: <' + link + '|**' + name + '**>. \nDate and Time: **' + datetime.strftime(time, '%d %b, %Y %I:%M %p %z') + '** \n\n'
     return res
 
 if '__main__' == __name__:
