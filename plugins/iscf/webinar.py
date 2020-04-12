@@ -41,10 +41,13 @@ def get(db, args):
     if not db.get(WB_INDEX, False):
         return 'Sorry. No upcoming events.'
     
-    if len(args) != 1:
+    num = 0
+
+    if len(args) == 0:
+        num = 5
+    elif len(args) != 1:
         return 'You should enter number of upcoming webinars as an argument.'
     
-    num = 0
     try:
         num = int(args[0])
     except:
