@@ -72,4 +72,4 @@ class ISCFBot(BotPlugin):
     
     def activate(self):
         super().activate()
-        self.start_poller(2, self.callback)
+        self.start_poller(60, self.callback)

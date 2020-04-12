@@ -35,6 +35,9 @@ def submit(db, args):
 
 # args: !wb get 3
 def get(db, args):
+    if not db.get('WB_INDEX', False):
+        return 'Sorry. No upcoming events.'
+    
     if len(args) != 1:
         return 'You should enter number of upcoming webinars as an argument.'
     
