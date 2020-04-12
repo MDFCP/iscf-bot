@@ -58,7 +58,7 @@ class ISCFBot(BotPlugin):
         return random.choice(response)
     
     @botcmd
-    def wb(self, msg, args):
+    def ev(self, msg, args):
         args = shlex.split(args)
 
         if args[0].lower() == 'submit':
