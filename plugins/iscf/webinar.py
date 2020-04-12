@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import html
 import heapq
-from datetime import datetime
+from datetime import datetime, timedelta
 
 WB_INDEX = 'webinars'
 
@@ -11,7 +11,7 @@ def submit(db, args):
     if len(args) != 3:
         return 'Something is missing. You should follow "<NAME> <DD/MM/YYYY hh:mm AM/PM> <WEBINAR_LINK>" format to submit a webinar'
     
-    if not db.get('WB_INDEX', False):
+    if not db.get(WB_INDEX, False):
         db[WB_INDEX] = []
     
     try:
@@ -35,7 +35,7 @@ def submit(db, args):
 
 # args: !wb get 3
 def get(db, args):
-    if not db.get('WB_INDEX', False):
+    if not db.get(WB_INDEX, False):
         return 'Sorry. No upcoming events.'
     
     if len(args) != 1:
@@ -58,13 +58,32 @@ def get(db, args):
         if heap[0][0] < datetime.now():
             heapq.heappop(heap)
         else:
-            res = res + 'Name: <' + heap[cnt][1]['link'] + '|**' + heap[cnt][1]['name'] + '**>. \nDate and Time: **' + datetime.strftime(heap[cnt][0], '%d %b, %Y %I:%M %p') + '** \n\n'
+            res = display_format(res, heap[cnt][1]['link'], heap[cnt][1]['name'], heap[cnt][0])
             cnt = cnt + 1
 
+    db[WB_INDEX] = heap
     print(res[:-2])
 
 def notify(self):
-    self.send(self.build_identifier("#bot-test"), 'notify')
+    if not self.get(WB_INDEX, False):
+        return
+
+    heap = self[WB_INDEX]
+    cnt = 0
+    while(True):
+        if len(heap) == 0 or cnt >= len(heap):
+            break
+        
+        cnt = cnt + 1
+        if heap[0][0] < (datetime.now() + timedelta(minutes = 10)):
+            self.send(self.build_identifier("#bot-test"), display_format('', heap[0][1]['link'], heap[0][1]['name'], heap[0][0]))
+            heapq.heappop(heap)
+    
+    self[WB_INDEX] = heap
+
+def display_format(res, link, name, time):
+    res = res + 'Name: <' + link + '|**' + name + '**>. \nDate and Time: **' + datetime.strftime(time, '%d %b, %Y %I:%M %p') + '** \n\n'
+    return res
 
 if '__main__' == __name__:
     print(submit({}))
