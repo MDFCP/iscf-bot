@@ -31,7 +31,7 @@ def submit(db, args):
 
     db[WB_INDEX] = temp_heap
     
-    return html.escape('Thanks!! You submitted **' + args[0] + '** which is scheduled at **' + datetime.strftime(parsed_date, '%d %b, %Y %I:%M %p') + '**.')
+    return html.escape('Cuurent Date: ' + datetime.now().strftime(parsed_date, '%d %b, %Y %I:%M %p') + '\nThanks!! You submitted **' + args[0] + '** which is scheduled at **' + datetime.strftime(parsed_date, '%d %b, %Y %I:%M %p') + '**.')
 
 # args: !wb get 3
 def get(db, args):
