@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import html
 import heapq
+import json
 import copy
 from pytz import timezone
 from datetime import datetime, timedelta
@@ -38,7 +39,7 @@ def submit(db, args):
     return html.escape('Thanks!! You submitted **' + args[0] + '** which is scheduled on **' + datetime.strftime(parsed_date, '%d %b, %Y %I:%M %p') + '**.')
 
 # args: !wb get 3
-def get(db, args):
+def get(db, frm, args):
     if not db.get(WB_INDEX, False):
         return 'Sorry. No upcoming events.'
     
@@ -54,7 +55,18 @@ def get(db, args):
     else:
         return 'You should enter number of upcoming webinars as an argument.'
 
-    res = ''
+    blocks = [
+        {
+            "type": "divider"
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": ":calendar: |   *UPCOMING EVENTS*  | :calendar: "
+            }
+        }
+    ]
     #stop_at = num if num < len(db[WB_INDEX]) else len(db[WB_INDEX])
     heap = db[WB_INDEX]
     cnt = 0
@@ -68,14 +80,53 @@ def get(db, args):
             heapq.heappop(new_heap)
         else:
             item = heapq.heappop(heap)
-            res = display_format(res, item[1]['link'], item[1]['name'], item[0])
+            blocks.append({
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "`"+ datetime.strftime(item[0], '%d %b, %Y %I:%M %p') +"` *" + item[1]['name'] + "*"
+                },
+                "accessory": {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Register",
+                        "emoji": True
+                    },
+                    "url": item[1]['link']
+                }
+            })
+            #res = display_format(res, item[1]['link'], item[1]['name'], item[0])
             cnt = cnt + 1
 
     db[WB_INDEX] = new_heap
+
+    blocks.append({
+        "type": "divider"
+    })
+    blocks.append({
+        "type": "context",
+        "elements": [
+            {
+                "type": "mrkdwn",
+                "text": ':pushpin: Here\'s *how to submit content:* `!ev submit "NAME OF THE EVENT" "DD/MM/YYYY hh:mm AM/PM" "LINK"`'
+            }
+        ]
+    })
     
-    if res == '':
+    if len(blocks) == 4:
         return 'Sorry. No upcoming events.'
-    return html.escape(res)
+    
+    #print(frm.channelname, frm.username)
+    db._bot.api_call('chat.postMessage', data={
+        'channel': frm.channelname,
+        'as_user': True,
+        'attachments': [
+            {
+                "blocks": blocks
+            }
+        ]
+    })
 
 def delete(db, args):
     if len(args) != 1:
