@@ -76,14 +76,18 @@ def notify(self):
 
     heap = self[WB_INDEX]
     cnt = 0
+    res = ''
     while(True):
         if len(heap) == 0 or cnt >= len(heap):
             break
         
         cnt = cnt + 1
         if heap[0][0] < (datetime.now(timezone('Asia/Kolkata')) + timedelta(minutes = 10)):
-            self.send(self.build_identifier("#bot-test"), html.escape(display_format('', heap[0][1]['link'], heap[0][1]['name'], heap[0][0])))
+            res = display_format(res, display_format('', heap[0][1]['link'], heap[0][1]['name'], heap[0][0]))
             heapq.heappop(heap)
+    
+    if res != '':
+        self.send(self.build_identifier("#bot-test"), html.escape('**Upcoming Events**\n' + res))
     
     self[WB_INDEX] = heap
 
