@@ -15,7 +15,7 @@ def submit(db, args):
         db[WB_INDEX] = []
     
     try:
-        parsed_date = datetime.strptime(args[1] + ' +0530', '%d/%m/%Y %I:%M %p %z')
+        parsed_date = datetime.strptime(args[1], '%d/%m/%Y %I:%M %p')
     except:
         return 'Date should be formatted as <DD/MM/YYYY hh:mm AM/PM>. eg: "12/04/2020 3:05 PM"'
 
@@ -85,7 +85,7 @@ def notify(self):
     self[WB_INDEX] = heap
 
 def display_format(res, link, name, time):
-    res = res + 'Name: <' + link + '|**' + name + '**>. \nDate and Time: **' + datetime.strftime(time, '%d %b, %Y %I:%M %p %z') + '** \n\n'
+    res = res + 'Name: <' + link + '|**' + name + '**>. \nDate and Time: **' + datetime.strftime(time, '%d %b, %Y %I:%M %p') + '** \n\n'
     return res
 
 if '__main__' == __name__:
