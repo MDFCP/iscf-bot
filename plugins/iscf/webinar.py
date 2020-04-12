@@ -62,7 +62,8 @@ def get(db, args):
             cnt = cnt + 1
 
     db[WB_INDEX] = heap
-    print(res[:-2])
+    
+    return res
 
 def notify(self):
     if not self.get(WB_INDEX, False):
