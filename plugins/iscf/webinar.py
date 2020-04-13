@@ -163,7 +163,7 @@ def notify(self):
         
         cnt = cnt + 1
         if heap[0][0] < (datetime.now(timezone('Asia/Kolkata')) + timedelta(minutes = 10)):
-            res = display_format(res, display_format('', heap[0][1]['link'], heap[0][1]['name'], heap[0][0]))
+            res = display_format(res, heap[0][1]['link'], heap[0][1]['name'], heap[0][0])
             heapq.heappop(heap)
     
     if res != '':
